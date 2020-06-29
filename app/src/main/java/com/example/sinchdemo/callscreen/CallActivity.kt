@@ -234,7 +234,7 @@ class CallActivity : BaseActivity() {
                 CallEndCause.FAILURE -> {
                 }
             }
-            Toast.makeText(this@CallActivity, endMsg, Toast.LENGTH_LONG).show()
+         //   Toast.makeText(this@CallActivity, endMsg, Toast.LENGTH_LONG).show()
             endCall()
         }
 

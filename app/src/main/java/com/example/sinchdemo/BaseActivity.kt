@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.text.Html
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sinchdemo.service.SinchService
@@ -25,6 +26,8 @@ abstract class BaseActivity : AppCompatActivity(), ServiceConnection {
         firebaseAuth = FirebaseAuth.getInstance()
         applicationContext.bindService(Intent(this, SinchService::class.java), this, Context.BIND_AUTO_CREATE)
         setContentView(getLAyout())
+        supportActionBar?.title = Html.fromHtml("<font color='#ffffff'>Sinch </font>");
+
     }
 
 
