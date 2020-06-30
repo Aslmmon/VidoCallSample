@@ -304,7 +304,7 @@ class CallActivity : BaseActivity() {
             userRecieveing = mCallerName?.text.toString(),
             duration = getDuration(durationSeconds, durationMinutes)
         )
-        Toast.makeText(this, getDuration(durationSeconds, durationMinutes), Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Your call lasts for ${getDuration(durationSeconds, durationMinutes)}", Toast.LENGTH_LONG)
             .show()
 
         /**
@@ -313,7 +313,6 @@ class CallActivity : BaseActivity() {
         getFirebaseUser()?.uid?.let { fuId ->
             databaseReference.child(fuId).child("chat Details").push().setValue(videoChatDetails)
                 .addOnCompleteListener {
-                    Toast.makeText(this, "Not Saved", Toast.LENGTH_SHORT).show()
                 }
         }
 
