@@ -2,6 +2,7 @@ package com.example.sinchdemo.callscreen
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -30,11 +31,11 @@ class HomeActivity : UsersRecyclerAdapter.Interaction,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         usersArrayList = mutableListOf()
-
+        supportActionBar?.title = Html.fromHtml("<font color='#ffffff'>Choose user to initiate a call </font>");
         userRecyclerAdapter = UsersRecyclerAdapter(this@HomeActivity)
 
 
-        databaseReference = FirebaseDatabase.getInstance().reference.child("users")
+        databaseReference = FirebaseDatabase.getInstance().reference
         featchAllUsers()
 
 
@@ -46,18 +47,23 @@ class HomeActivity : UsersRecyclerAdapter.Interaction,
 
 
     private fun featchAllUsers() {
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
+        databaseReference.child("users").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                Log.i(javaClass.simpleName,error.message.toString())
+                Log.i(javaClass.simpleName,error.details)
 
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 usersArrayList.clear()
                 dataSnapshot.children.forEach {
+                    Log.i(javaClass.simpleName,it.toString())
                     val User = it.getValue(User::class.java)
                     if (User != null && User.id != getFirebaseUser()?.uid) {
                         usersArrayList.add(User)
                     }
+                    Log.i(javaClass.simpleName,usersArrayList.toString())
+
                 }
                 userRecyclerAdapter.submitList(usersArrayList)
                 /**

@@ -19,7 +19,7 @@ import com.sinch.android.rtc.calling.CallEndCause
 import com.sinch.android.rtc.calling.CallState
 import com.sinch.android.rtc.video.VideoCallListener
 import com.sinch.android.rtc.video.VideoController
-import java.text.SimpleDateFormat
+import kotlinx.android.synthetic.main.activity_call.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -31,10 +31,8 @@ class CallActivity : BaseActivity() {
     private var mTimer: Timer? = null
     private var mDurationTask: UpdateCallDurationTask? = null
     lateinit var databaseReference: DatabaseReference
-    lateinit var currentTime:Date
-    lateinit var endTime:Date
-
-
+    lateinit var currentTime: Date
+    lateinit var endTime: Date
 
 
     private var mCallId: String? = null
@@ -88,9 +86,9 @@ class CallActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         mAudioPlayer = AudioPlayer(this)
-        mCallDuration = findViewById<TextView>(R.id.callDuration)
-        mCallerName = findViewById<TextView>(R.id.remoteUser)
-        mCallState = findViewById<TextView>(R.id.callState)
+        mCallDuration = findViewById(R.id.callDuration)
+        mCallerName = findViewById(R.id.remoteUser)
+        mCallState = findViewById(R.id.callState)
         val endCallButton = findViewById<Button>(R.id.hangupButton)
         endCallButton.setOnClickListener { endCall() }
         databaseReference = FirebaseDatabase.getInstance().reference.child("users")
@@ -149,7 +147,8 @@ class CallActivity : BaseActivity() {
         val call: Call? = getSinchServiceInterfaceNew()?.getCall(mCallId)
         if (call != null) {
             mCallerName?.text = call.remoteUserId
-            mCallState?.text = call.state.toString()
+            if (call.state == CallState.INITIATING) mCallState?.text = "Connecting"
+            else mCallState?.text = call.state.toString()
             if (call.state == CallState.ESTABLISHED) {
                 //when the call is established, addVideoViews configures the video to  be shown
                 addVideoViews()
@@ -160,8 +159,8 @@ class CallActivity : BaseActivity() {
     //stop the timer when call is ended
     override fun onStop() {
         super.onStop()
-        mDurationTask!!.cancel()
-        mTimer!!.cancel()
+        mDurationTask?.cancel()
+        mTimer?.cancel()
         removeVideoViews()
     }
 
@@ -218,39 +217,49 @@ class CallActivity : BaseActivity() {
             Log.i("cause", "Call ended. Reason: $cause")
             mAudioPlayer?.stopProgressTone()
             volumeControlStream = AudioManager.USE_DEFAULT_STREAM_TYPE
-            val endMsg = "Call ended: " + call.details.toString()
             when (cause) {
                 CallEndCause.HUNG_UP -> {
                     saveToDatabase(call.details)
                 }
                 CallEndCause.DENIED -> {
+                    Toast.makeText(this@CallActivity, "call Denied", Toast.LENGTH_SHORT).show()
+
                 }
                 CallEndCause.CANCELED -> {
+                    Toast.makeText(this@CallActivity, "call Cancelled", Toast.LENGTH_SHORT).show()
+
                 }
                 CallEndCause.NO_ANSWER -> {
+                    Toast.makeText(
+                        this@CallActivity,
+                        "No Answer after  ${callDuration.text} seconds",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 CallEndCause.TIMEOUT -> {
+                    Log.i(javaClass.simpleName, cause.toString())
+                    Toast.makeText(
+                        this@CallActivity,
+                        "call Timeout after  ${callDuration.text} seconds",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 CallEndCause.FAILURE -> {
+                    Toast.makeText(this@CallActivity, "call Failed", Toast.LENGTH_SHORT).show()
+
                 }
             }
-         //   Toast.makeText(this@CallActivity, endMsg, Toast.LENGTH_LONG).show()
             endCall()
         }
 
         override fun onCallEstablished(call: Call) {
-            Log.d(
-                "test", "Call established"
-            )
-             currentTime = Calendar.getInstance().time
-
+            currentTime = Calendar.getInstance().time
             mAudioPlayer?.stopProgressTone()
             mCallState?.text = call.state.toString()
             volumeControlStream = AudioManager.STREAM_VOICE_CALL
             val audioController: AudioController? = getSinchServiceInterfaceNew()?.audioController
             audioController?.enableSpeaker()
             mCallStart = System.currentTimeMillis()
-            Log.d("test", "Call offered video: " + call.details.isVideoOffered)
         }
 
         override fun onVideoTrackResumed(p0: Call?) {
@@ -286,7 +295,6 @@ class CallActivity : BaseActivity() {
         val duration = endTime.time - currentTime.time
         val durationSeconds = TimeUnit.MILLISECONDS.toSeconds(duration)
         val durationMinutes = "${TimeUnit.MILLISECONDS.toMinutes(duration)} minutes "
-
         Log.i("cause", "user " + getFirebaseUser()?.email)
         Log.i("cause", "user reciever $mCallerName")
         val videoChatDetails = VidoeChatDetails(
@@ -294,38 +302,25 @@ class CallActivity : BaseActivity() {
             callEndTime = endTime.toString(),
             userCalling = getFirebaseUser()?.email.toString(),
             userRecieveing = mCallerName?.text.toString(),
-            duration = if(durationSeconds>60)  durationMinutes + "minutes"  else "$durationSeconds seconds"
+            duration = getDuration(durationSeconds, durationMinutes)
         )
+        Toast.makeText(this, getDuration(durationSeconds, durationMinutes), Toast.LENGTH_SHORT)
+            .show()
 
         /**
          * user calling , user Recieveing
          */
-
         getFirebaseUser()?.uid?.let { fuId ->
             databaseReference.child(fuId).child("chat Details").push().setValue(videoChatDetails)
                 .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Toast.makeText(
-                            this,
-                            "Saved Successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        //   finish()
-                    } else {
-                        Toast.makeText(this, "Not Saved", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    Toast.makeText(this, "Not Saved", Toast.LENGTH_SHORT).show()
                 }
         }
 
     }
 
-    private fun formatDate(milliseconds: Long): String? /* This is your topStory.getTime()*1000 */ {
-        val formatter = SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS")
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = milliseconds
-        return formatter.format(calendar.time)
-    }
+    private fun getDuration(durationSeconds: Long, durationMinutes: String) =
+        if (durationSeconds > 60) durationMinutes + "minutes" else "$durationSeconds seconds"
 
 
 }

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:id="@+id/et_name_ed"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="Email" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

@@ -103,14 +103,6 @@ class MainActivity : BaseActivity(),
     }
 
 
-    override fun onStart() {
-        super.onStart()
-//        val currentUser = mAuth.currentUser
-//        if (currentUser != null) {
-//            goToHomeActivity()
-//        }
-    }
-
 
     override fun onStartFailed(error: SinchError?) {
         Log.i(javaClass.simpleName, error.toString())

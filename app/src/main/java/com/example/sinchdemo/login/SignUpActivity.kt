@@ -2,6 +2,7 @@ package com.example.sinchdemo.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.example.sinchdemo.BaseActivity
 import com.example.sinchdemo.R
@@ -41,6 +42,9 @@ class SignUpActivity : BaseActivity() {
                                 }
                         }
                     }
+                }
+                .addOnFailureListener { it->
+                    Log.i(javaClass.simpleName,it.toString())
                 }
         }
     }
