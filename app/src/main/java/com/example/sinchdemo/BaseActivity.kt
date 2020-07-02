@@ -8,11 +8,13 @@ import android.os.Bundle
 import android.os.IBinder
 import android.text.Html
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sinchdemo.service.SinchService
 import com.example.sinchdemo.service.SinchService.SinchServiceInterface
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.progress.*
 
 
 abstract class BaseActivity : AppCompatActivity(), ServiceConnection {
@@ -31,6 +33,12 @@ abstract class BaseActivity : AppCompatActivity(), ServiceConnection {
     }
 
 
+     fun dismisProgress() {
+        progress.visibility = View.INVISIBLE
+    }
+    fun showProgress() {
+        progress.visibility = View.VISIBLE
+    }
     override fun onServiceConnected(p0: ComponentName?, iBinder: IBinder?) {
       //  if (SinchService::class.java.name == componentName.className) {
             mSinchServiceInterface = iBinder as SinchServiceInterface

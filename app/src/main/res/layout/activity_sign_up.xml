@@ -53,5 +53,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_password" />
 
+    <include layout="@layout/progress" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

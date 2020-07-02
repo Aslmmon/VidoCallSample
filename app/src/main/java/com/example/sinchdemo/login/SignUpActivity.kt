@@ -21,6 +21,11 @@ class SignUpActivity : BaseActivity() {
         databaseReference = FirebaseDatabase.getInstance().reference.child("users")
 
         btn_signUp_register.setOnClickListener {
+            if(et_name_ed_register.text?.isEmpty()!! || et_password_ed_register.text?.isEmpty()!!){
+                Toast.makeText(this, "fill Empty Fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            showProgress()
             firebaseAuth.createUserWithEmailAndPassword(
                 et_name_ed_register.text.toString(),
                 et_password_ed_register.text.toString()
@@ -35,15 +40,19 @@ class SignUpActivity : BaseActivity() {
                                             this,
                                             "Created Successfully",
                                             Toast.LENGTH_SHORT
-                                        )
-                                            .show()
+                                        ).show()
+                                        dismisProgress()
                                         finish()
-                                    } else { Toast.makeText(this, "Not Created", Toast.LENGTH_SHORT).show() }
+                                    } else {
+                                        dismisProgress()
+                                        Toast.makeText(this, "Not Created", Toast.LENGTH_SHORT).show() }
                                 }
                         }
                     }
                 }
                 .addOnFailureListener { it->
+                    dismisProgress()
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     Log.i(javaClass.simpleName,it.toString())
                 }
         }

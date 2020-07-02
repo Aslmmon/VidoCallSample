@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.sinchdemo.BaseActivity
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sinch.android.rtc.SinchError
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.progress.*
 
 
 class MainActivity : BaseActivity(),
@@ -34,16 +36,24 @@ class MainActivity : BaseActivity(),
         btn_signIn.setOnClickListener {
             val name = et_name_ed.text.toString()
             val password = et_password_ed.text.toString()
-            if (name.isEmpty() || password.isEmpty()) return@setOnClickListener
+            if (name.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Fill empty Fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            showProgress()
+
             mAuth.signInWithEmailAndPassword(name, password)
                 .addOnCompleteListener(this, OnCompleteListener<AuthResult?> { task ->
                     if (task.isSuccessful) {
                         if (!getSinchServiceInterfaceNew()?.isStarted!!) {
                             getSinchServiceInterfaceNew()?.startClient(getFirebaseUser()?.email)
+                            dismisProgress()
                         } else {
+                            dismisProgress()
                             goToHomeActivity()
                         }
                     } else {
+                        dismisProgress()
                         Toast.makeText(
                             this, "Authentication failed.",
                             Toast.LENGTH_SHORT
@@ -65,12 +75,14 @@ class MainActivity : BaseActivity(),
         }
     }
 
+
     private fun setupPermissions() {
         val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
         if (permission != PackageManager.PERMISSION_GRANTED) {
             makeRequest()
         }
     }
+
     private fun makeRequest() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
@@ -101,7 +113,6 @@ class MainActivity : BaseActivity(),
     override fun getLAyout(): Int {
         return R.layout.activity_main
     }
-
 
 
     override fun onStartFailed(error: SinchError?) {

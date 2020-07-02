@@ -75,6 +75,5 @@
         app:layout_constraintGuide_percent="0.3"
         />
 
-
-
+    <include layout="@layout/progress" />
 </androidx.constraintlayout.widget.ConstraintLayout>

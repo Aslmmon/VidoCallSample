@@ -147,7 +147,7 @@ class CallActivity : BaseActivity() {
         val call: Call? = getSinchServiceInterfaceNew()?.getCall(mCallId)
         if (call != null) {
             mCallerName?.text = call.remoteUserId
-            if (call.state == CallState.INITIATING) mCallState?.text = "Connecting"
+            if (call.state == CallState.INITIATING) mCallState?.text = "Calling, Waiting for other user to pick up"
             else mCallState?.text = call.state.toString()
             if (call.state == CallState.ESTABLISHED) {
                 //when the call is established, addVideoViews configures the video to  be shown
