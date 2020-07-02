@@ -34,15 +34,15 @@ class MainActivity : BaseActivity(),
         setupPermissions()
 
         btn_signIn.setOnClickListener {
-            val name = et_name_ed.text.toString()
-            val password = et_password_ed.text.toString()
-            if (name.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Fill empty Fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+//            val name = et_name_ed.text.toString()
+//            val password = et_password_ed.text.toString()
+//            if (name.isEmpty() || password.isEmpty()) {
+//                Toast.makeText(this, "Fill empty Fields", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
             showProgress()
 
-            mAuth.signInWithEmailAndPassword(name, password)
+            mAuth.signInWithEmailAndPassword("aslm@gmail.com", "123456")
                 .addOnCompleteListener(this, OnCompleteListener<AuthResult?> { task ->
                     if (task.isSuccessful) {
                         if (!getSinchServiceInterfaceNew()?.isStarted!!) {
