@@ -19,14 +19,15 @@ class CallLogsRecyclerAdapter(private val interaction: Interaction? = null) :
             oldItem: VidoeChatDetails,
             newItem: VidoeChatDetails
         ): Boolean {
-            TODO("not implemented")
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
             oldItem: VidoeChatDetails,
             newItem: VidoeChatDetails
         ): Boolean {
-            TODO("not implemented")
+            return oldItem == newItem
+
         }
 
     }

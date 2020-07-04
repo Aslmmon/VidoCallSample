@@ -23,26 +23,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.progress.*
 
 
-class MainActivity : BaseActivity(),
+class SignInActivity : BaseActivity(),
     SinchService.StartFailedListener {
-    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mAuth = FirebaseAuth.getInstance()
 
         setupPermissions()
 
         btn_signIn.setOnClickListener {
-//            val name = et_name_ed.text.toString()
-//            val password = et_password_ed.text.toString()
-//            if (name.isEmpty() || password.isEmpty()) {
-//                Toast.makeText(this, "Fill empty Fields", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
+            val name = et_name_ed.text.toString()
+            val password = et_password_ed.text.toString()
+            if (name.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Fill empty Fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             showProgress()
 
-            mAuth.signInWithEmailAndPassword("aslm@gmail.com", "123456")
+            firebaseAuth.signInWithEmailAndPassword(name, password)
                 .addOnCompleteListener(this, OnCompleteListener<AuthResult?> { task ->
                     if (task.isSuccessful) {
                         if (!getSinchServiceInterfaceNew()?.isStarted!!) {
@@ -119,7 +117,6 @@ class MainActivity : BaseActivity(),
         Log.i(javaClass.simpleName, error.toString())
     }
 
-    //this method is invoked when the connection is established with the SinchService
     override fun onServiceConnected() {
         Log.i("service", "connected")
         getSinchServiceInterfaceNew()?.setStartListener(this)

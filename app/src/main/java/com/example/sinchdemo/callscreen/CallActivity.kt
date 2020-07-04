@@ -304,8 +304,8 @@ class CallActivity : BaseActivity() {
             userRecieveing = mCallerName?.text.toString(),
             duration = getDuration(durationSeconds, durationMinutes)
         )
-        Toast.makeText(this, "Your call lasts for ${getDuration(durationSeconds, durationMinutes)}", Toast.LENGTH_LONG)
-            .show()
+//        Toast.makeText(this, "Your call lasts for ${getDuration(durationSeconds, durationMinutes)}", Toast.LENGTH_LONG)
+//            .show()
 
         /**
          * user calling , user Recieveing

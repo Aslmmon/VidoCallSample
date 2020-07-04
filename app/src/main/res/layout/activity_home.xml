@@ -18,53 +18,23 @@
         tools:itemCount="3"
         tools:listitem="@layout/user_item" />
 
-<!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="End Call"-->
-<!--            android:textSize="14sp"-->
-<!--            android:id="@+id/btn_end_call"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/btn_mute_call"-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:backgroundTint="@color/colorPrimary"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            />-->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call Logs"
+            app:icon="@drawable/ic_call"
+            app:iconTint="@color/white"
+            android:textSize="14sp"
+            android:id="@+id/btn_call_logs"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
-<!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Mute Call"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintStart_toEndOf="@id/btn_end_call"-->
-<!--            android:id="@+id/btn_mute_call"-->
-<!--            android:layout_margin="5dp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:backgroundTint="@color/colorPrimary"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            />-->
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Call Logs"-->
-<!--        android:id="@+id/tv_call_logs"-->
-<!--        android:textSize="24sp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        />-->
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:layout_width="0dp"-->
-<!--        android:id="@+id/call_logs_recyclr"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--        app:layout_constraintStart_toStartOf="@id/tv_call_logs"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tv_call_logs"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
